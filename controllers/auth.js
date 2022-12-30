@@ -52,7 +52,9 @@ exports.login = async (req, res) => {
                 secure: false,
               };
               res.cookie("jwt", token, cookieOptions);
-              res.status(200).send({ status: 1, token });
+              const username = result[0].username;
+              const id = result[0]._id;
+              res.status(200).send({ status: 1, token , username , id});
               return;
             } else {
               res.status(200).send({ status: 2 });
