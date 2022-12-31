@@ -22,13 +22,10 @@ router.get("/signup", (req, res) => {
   res.send("<h1>api/auth/signup request arrive</h1>");
 });
 
-router.post("/updateUserProfileDetails", bodyParser.json(), (req, res) => {
+router.post("/updateUserProfile", bodyParser.json(), (req, res) => {
   console.log("request arrive");
   console.log("username: ", req.body.urername);
   console.log("username: ", req.body.about);
-
-  
-
 });
 
 module.exports = router;
