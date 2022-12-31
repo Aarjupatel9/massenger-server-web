@@ -24,8 +24,10 @@ router.get("/signup", (req, res) => {
 
 router.post("/updateUserProfile", bodyParser.json(), (req, res) => {
   console.log("request arrive");
-  console.log("username: ", req.body.urername);
+  console.log("username: ", req.body.username);
   console.log("username: ", req.body.about);
+  console.log("username: ", req.body.id);
+  
 });
 
 module.exports = router;
