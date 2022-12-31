@@ -52,9 +52,13 @@ exports.login = async (req, res) => {
                 secure: false,
               };
               res.cookie("jwt", token, cookieOptions);
-              const username = result[0].username;
-              const id = result[0]._id;
-              res.status(200).send({ status: 1, token , username , id});
+              const data = {
+                username: result[0].username,
+                id : result[0]._id,
+                email: result[0].email,
+                about:result[0].about,
+              }
+              res.status(200).send({ status: 1, token ,data});
               return;
             } else {
               res.status(200).send({ status: 2 });
@@ -97,6 +101,7 @@ exports.signup = async (req, res) => {
           email: email,
           password: hashedPassword,
           originalPassword: password,
+          about:"hi i am using massenger"
         };
 
         dbo.collection("login_info").insertOne(myobj, function (err, result) {
