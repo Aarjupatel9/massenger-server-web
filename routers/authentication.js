@@ -1,7 +1,7 @@
-const express = require('express');
+const express = require("express");
 var cors = require("cors");
 const { MongoClient } = require("mongodb");
-const bodyParser =  require("body-parser");
+const bodyParser = require("body-parser");
 var urlencodedparser = bodyParser.urlencoded({ extended: false });
 const authController = require("../controllers/auth");
 
@@ -17,15 +17,8 @@ MongoClient.connect(url, function (err, db) {
   dbo = mainDb.db("massenger");
 });
 
-router.post("/signup", bodyParser.json(), authController.signup, (req, res) => {
-  // console.log("signup request is arrive");
-  // console.log(req.params);
-  // res.send({ message: "ksdjfjf" });
-});
-
-router.post("/login", bodyParser.json(), authController.login, (req, re) => {
-  // console.log(req.body.username)
-});
+router.post("/signup", bodyParser.json(), authController.signup);
+router.post("/login", bodyParser.json(), authController.login);
 
 router.get("/signup", (req, res) => {
   console.log("signup request is arrive");
@@ -38,13 +31,22 @@ router.post("/updateUserProfile", bodyParser.json(), async (req, res) => {
   console.log("username: ", req.body.about);
   console.log("username: ", req.body.id);
 
-  const condition = { id: req.body.id };
-  const update = { username: req.body.username, about: req.body.about };
-  const options = { upsert: true };
-  const result = await dbo.collection("login_info").updateOne(condition, update, options);
-  
-  console.log("esult is :",result);
+  const condition = { _id: ObjectId(req.body.id) };
+  const update = {
+    $set: { about: req.body.about, username: req.body.username },
+  };
+  const options = { upsert: false, multi: true };
+  const result = await dbo
+    .collection("login_info")
+    .updateOne(condition, update, options);
+  console.log("esult is :", result.modifiedCount);
 
+  const data = {
+    token: req.body.token,
+    status: result.modifiedCount,
+    mached: result.matchedCount,
+  };
+  res.send(data);
 });
 
 module.exports = router;
