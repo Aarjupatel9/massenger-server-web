@@ -8,6 +8,7 @@ const authController = require("../controllers/auth");
 const router = express.Router();
 router.use(cors());
 
+var url = "mongodb://localhost:27017/";
 var mainDb;
 var dbo;
 MongoClient.connect(url, function (err, db) {
